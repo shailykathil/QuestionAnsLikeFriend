@@ -1,0 +1,95 @@
+<h1>Your profile</h1>
+<h3><%#= link_to "Notifications", user_notification_path %></h3><br>
+
+<h3><%#= link_to "Add a Friend", "#abb", data: {toggle: "collapse"} , data: {target: "#demo"} %></h3>
+ <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo1">your friends</button> <br>
+<div class="container">
+<div id="demo1" class="collapse">
+  <%if @friends != nil%>
+    <%  @friends.each do |friend| %>
+     <%= User.where(id: friend.sender).first.email %>
+    <% end %>
+  <% end %>
+  <%if @friends1 != nil%>
+    <%  @friends1.each do |friend| %>
+     <%= User.where(id: friend.receiver).first.email %>
+    <% end %>
+  <% end %>
+</div>
+</div>
+<br><button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Add a friend</button>  
+<div class="container">
+<div id="demo" class="collapse">
+<% @users.each do |user| %>
+  <% if !(Friendship.where(receiver: user.id, sender: current_user.id).first.present?) && !(Friendship.where(receiver: current_user.id, sender: user.id).first.present?) %>
+    <p>
+      <%= user.email %>
+      <%= link_to "Add Friend", user_addfriend_path(id: user.id) %>
+    </p>
+  <% end %>
+<% end %>
+<%if @friend_request != nil%>
+<%  @friend_request.each do |frr| %>
+  <p>
+    <%unless frr.accept == true && frr != nil%>
+      <% @userr = User.where(id: frr.sender).first %>
+      <%= "u have a friend request from #{@userr.email }" %>
+      <%= link_to "accept", user_accept_path(re: current_user.id,se: @userr.id) %>
+    <%= link_to "delete", user_delete_path(re: current_user.id,se: @userr.id) %>
+    <%end%>
+  </p>
+<% end %>
+<% end %>
+</div>
+</div>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Profile first login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body style="padding-top:50px;">
+ <div class="container">
+  <div align="right">
+  <%#= link_to "Edit Profile", edit_user_registration_path, class: "btn btn-success" %>
+</div>
+ </div>
+    <div class="container">
+      <center>
+       
+        <%#=image_tag current_user.img, class: "img-circle" , alt: "Cinque Terre" ,size: 10*10%>
+        <div><%#=current_user.name%></div>
+
+      </center>
+    </div>
+    <div class="continer my-continer padd2">
+       <p >email</p>
+     <div class="well well-sm  "><%=current_user.email%></div>
+       <p >About</p>
+     <div class="well well-sm  "><%#=current_user.about%></div>
+      <div class="btn-group">
+        <p>Intrest</p>
+        <button style="padding:50px 60px;margin-left:30px;" type="button" class="btn">Design</button>
+        <button style="padding:50px 60px;margin-left:30px;" type="button" class="btn">Art</button>
+        <button style="padding:50px 60px;margin-left:30px;" type="button" class="btn">Graphics</button>
+        <button style="padding:50px 60px;margin-left:30px;" type="button" class="btn">Music</button>
+        <button style="padding:50px 60px;margin-left:30px;" type="button" class="btn">Drama</button>
+      </div>
+      <br/><br/><br/>
+      <div class="container">
+        <div class="col-md-10">
+          <center><button style="padding:5px 60px;" type="button" class="btn">Next</button></center>
+        </div>
+        <div class="col-md-2">
+          <p class="alinright"> <a href="">Skip This</a></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

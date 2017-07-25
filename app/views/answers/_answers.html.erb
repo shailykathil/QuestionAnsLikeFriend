@@ -1,0 +1,22 @@
+<% @question.answers.each do |answer|%>
+<h3>Answers</h3>
+<p>
+  <strong>Name:</strong>
+  <%= answer.name %>
+</p>
+ 
+<p>
+  <strong>Description:</strong>
+  <%= answer.description %>
+</p>
+<p>
+<% @likes= Like.where(:liked_id=> answer.id)
+%>
+<%= @likes.count%>
+<%= render 'answers/like', :answer=>answer %>
+<% if @likes.present? %>
+ <%= render 'answers/unlike', :answer=>answer %>
+<% end %>
+</p>
+
+<% end %>

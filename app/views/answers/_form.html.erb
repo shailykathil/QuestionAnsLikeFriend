@@ -1,0 +1,17 @@
+<% @question = @question || question %>
+<%= form_for([@question, @question.answers.build], :remote=>true) do |f| %>
+  <%= f.hidden_field :question_id, :value => @question.id %>
+  <%= f.hidden_field :user_id, :value => current_user.id %>
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_field :description %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
